@@ -1,0 +1,6 @@
+#!/bin/bash
+read file
+comp=` ls -lRi |  grep $file`
+echo "ls -lRi |  grep <file>:"
+echo "$comp"
+

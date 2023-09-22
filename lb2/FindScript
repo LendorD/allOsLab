@@ -1,0 +1,3 @@
+#!/bin/bash
+var=`find . -type f -name "*.txt"  -exec grep primite {} + -exec chmod +r {} + -exec cat  {} +`
+echo "$var"

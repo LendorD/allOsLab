@@ -1,0 +1,311 @@
+df -hT
+Файл.система    Тип      Размер Использовано  Дост Использовано% Cмонтировано в
+udev            devtmpfs   7,5G            0  7,5G            0% /dev
+tmpfs           tmpfs      1,5G         2,1M  1,5G            1% /run
+/dev/nvme0n1p9  ext4       122G          13G  103G           11% /
+tmpfs           tmpfs      7,5G          42M  7,5G            1% /dev/shm
+tmpfs           tmpfs      5,0M         4,0K  5,0M            1% /run/lock
+tmpfs           tmpfs      7,5G            0  7,5G            0% /sys/fs/cgroup
+/dev/loop0      squashfs   128K         128K     0          100% /snap/bare/5
+/dev/loop2      squashfs   880M         880M     0          100% /snap/clion/229
+/dev/loop3      squashfs   117M         117M     0          100% /snap/core/14784
+/dev/loop5      squashfs   117M         117M     0          100% /snap/core/14946
+/dev/loop4      squashfs    56M          56M     0          100% /snap/core18/2714
+/dev/loop6      squashfs    56M          56M     0          100% /snap/core18/2721
+/dev/loop7      squashfs    64M          64M     0          100% /snap/core20/1828
+/dev/loop8      squashfs   219M         219M     0          100% /snap/gnome-3-34-1804/77
+/dev/loop10     squashfs    64M          64M     0          100% /snap/core20/1852
+/dev/loop15     squashfs    66M          66M     0          100% /snap/gtk-common-themes/1515
+/dev/loop12     squashfs   347M         347M     0          100% /snap/gnome-3-38-2004/119
+/dev/loop16     squashfs    92M          92M     0          100% /snap/gtk-common-themes/1535
+/dev/loop13     squashfs    46M          46M     0          100% /snap/snap-store/638
+/dev/loop19     squashfs    50M          50M     0          100% /snap/snapd/18596
+/dev/loop14     squashfs    46M          46M     0          100% /snap/snap-store/599
+/dev/loop17     squashfs   4,3M         4,3M     0          100% /snap/tree/18
+/dev/loop18     squashfs    50M          50M     0          100% /snap/snapd/18357
+/dev/nvme0n1p10 ext4        19G         2,4G   15G           14% /home
+/dev/nvme0n1p1  vfat       196M          66M  131M           34% /boot/efi
+/dev/loop20     squashfs   219M         219M     0          100% /snap/gnome-3-34-1804/90
+/dev/loop9      squashfs   350M         350M     0          100% /snap/gnome-3-38-2004/137
+/dev/loop11     squashfs   890M         890M     0          100% /snap/clion/233
+tmpfs           tmpfs      1,5G          40K  1,5G            1% /run/user/1000
+ls -l -R| tr -s ""| cut -d "" -f 1,9 | sort| uniq -w 1| cut -c 1,11-
+
+.
+d 11 lendor lendor 4096 сен 25  2022 Browser
+.
+l 1 lendor lendor      10 мар 20 22:53 softtest -> testfl.txt
+.
+- 1 lendor lendor        0 сен 25  2022 lock
+.
+� 0
+.ка:
+
+.
+d 11 lendor lendor 4096 сен 25  2022 Browser
+.
+l 1 lendor lendor      10 мар 20 22:53 softtest -> testfl.txt
+.
+- 1 lendor lendor        0 сен 25  2022 lock
+.
+� 0
+.ка:
+ls -li -R | grep 537071
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 hard-test
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 testlb2mod.txt
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 hard-test
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 testlb2mod.txt
+ls -li | grep test
+536046 -rw-rw-r-- 1 lendor lendor       9 мар  5 23:02 copy-test
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 hard-test
+536674 -rw-rw-r-- 2 lendor lendor      12 мар 20 22:43 hard-two-test
+532221 lrwxrwxrwx 1 lendor lendor      10 мар 20 22:53 softtest -> testfl.txt
+529359 lrwxrwxrwx 1 lendor lendor       8 мар 20 18:08 soft-testre -> test.txt
+529344 lrwxrwxrwx 1 lendor lendor       8 мар 20 18:11 soft-two-test -> test.txt
+536674 -rw-rw-r-- 2 lendor lendor      12 мар 20 22:43 testfl.txt
+537071 -rw--w---- 2 jhon   lendor       4 мар 20 19:18 testlb2mod.txt
+527696 -rw-rw-r-- 1 lendor lendor       5 мар  6 19:00 twotest.txt
+532492 -rw-rw-r-- 1 lendor lendor       7 мар 20 22:48 ziptest.zip
+#!/bin/bash
+comp=`ls -lRi | grep 'soft' | grep 'test'`
+count=`ls -lRi | grep 'soft' | grep 'test'| wc -l`
+echo "$comp"
+echo "Count link: $count"
+532221 lrwxrwxrwx 1 lendor lendor      10 мар 20 22:53 softtest -> testfl.txt
+529359 lrwxrwxrwx 1 lendor lendor       8 мар 20 18:08 soft-testre -> test.txt
+529344 lrwxrwxrwx 1 lendor lendor       8 мар 20 18:11 soft-two-test -> test.txt
+Count link: 3
+find -type l| grep test
+./soft-testre
+./softtest
+./soft-two-test
+od testfl.txt
+0000000 071541 020144 074172 020143 073561 005145
+0000014
+od -c my_open|head
+0000000 177   E   L   F 002 001 001  \0  \0  \0  \0  \0  \0  \0  \0  \0
+0000020 003  \0   >  \0 001  \0  \0  \0 300 020  \0  \0  \0  \0  \0  \0
+0000040   @  \0  \0  \0  \0  \0  \0  \0 020   :  \0  \0  \0  \0  \0  \0
+0000060  \0  \0  \0  \0   @  \0   8  \0  \r  \0   @  \0 037  \0 036  \0
+0000100 006  \0  \0  \0 004  \0  \0  \0   @  \0  \0  \0  \0  \0  \0  \0
+0000120   @  \0  \0  \0  \0  \0  \0  \0   @  \0  \0  \0  \0  \0  \0  \0
+0000140 330 002  \0  \0  \0  \0  \0  \0 330 002  \0  \0  \0  \0  \0  \0
+0000160  \b  \0  \0  \0  \0  \0  \0  \0 003  \0  \0  \0 004  \0  \0  \0
+0000200 030 003  \0  \0  \0  \0  \0  \0 030 003  \0  \0  \0  \0  \0  \0
+0000220 030 003  \0  \0  \0  \0  \0  \0 034  \0  \0  \0  \0  \0  \0  \0
+objdump -f a.out
+
+a.out:     формат файла elf64-x86-64
+архитектура: i386:x86-64, флаги 0x00000150:
+HAS_SYMS, DYNAMIC, D_PAGED
+начальный адрес 0x00000000000010c0
+
+script:
+#!/bin/bash
+cd Test/
+counter=1
+for((i=1;i<3000;i++))
+do 
+	mkdir $i.dr # создание папки
+	cp lb1.odt lb1-copy.odt
+	mv lb1-copy.odt $i.dr
+	> $i # создание файла
+	ls -l ~ >> $i
+	#вывод размера директории
+	du -sh ~/Test
+done
+for((i=3000-1; i > 1; i--))
+do
+	cd $i.dr
+	rm lb1-copy.odt
+	cd ..
+	rmdir $i.dr #удаление папок
+	rm $i #удаление файлов
+done
+
+cat /etc/passwd:
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:114::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:115::/nonexistent:/usr/sbin/nologin
+avahi-autoipd:x:109:116:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin
+usbmux:x:110:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+rtkit:x:111:117:RealtimeKit,,,:/proc:/usr/sbin/nologin
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+cups-pk-helper:x:113:120:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+speech-dispatcher:x:114:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+avahi:x:115:121:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/nologin
+kernoops:x:116:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+saned:x:117:123::/var/lib/saned:/usr/sbin/nologin
+nm-openvpn:x:118:124:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+hplip:x:119:7:HPLIP system user,,,:/run/hplip:/bin/false
+whoopsie:x:120:125::/nonexistent:/bin/false
+colord:x:121:126:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+geoclue:x:122:127::/var/lib/geoclue:/usr/sbin/nologin
+pulse:x:123:128:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/nologin
+gnome-initial-setup:x:124:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:125:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+sssd:x:126:131:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+privoxy:x:127:65534::/etc/privoxy:/usr/sbin/nologin
+debian-tor:x:128:134::/var/lib/tor:/bin/false
+lendor:x:1000:1000:Lendor,,,:/home/lendor:/bin/bash
+jhon:x:1001:1001::/home/jhon:/bin/sh
+ls -li /etc/passwd:
+4983532 -rw-r--r-- 1 root root 2942 мар  6 21:29 /etc/passwd
+cat /etc/shadow:
+root:!:19188:0:99999:7:::
+daemon:*:18858:0:99999:7:::
+bin:*:18858:0:99999:7:::
+sys:*:18858:0:99999:7:::
+sync:*:18858:0:99999:7:::
+games:*:18858:0:99999:7:::
+man:*:18858:0:99999:7:::
+lp:*:18858:0:99999:7:::
+mail:*:18858:0:99999:7:::
+news:*:18858:0:99999:7:::
+uucp:*:18858:0:99999:7:::
+proxy:*:18858:0:99999:7:::
+www-data:*:18858:0:99999:7:::
+backup:*:18858:0:99999:7:::
+list:*:18858:0:99999:7:::
+irc:*:18858:0:99999:7:::
+gnats:*:18858:0:99999:7:::
+nobody:*:18858:0:99999:7:::
+systemd-network:*:18858:0:99999:7:::
+systemd-resolve:*:18858:0:99999:7:::
+systemd-timesync:*:18858:0:99999:7:::
+messagebus:*:18858:0:99999:7:::
+syslog:*:18858:0:99999:7:::
+_apt:*:18858:0:99999:7:::
+tss:*:18858:0:99999:7:::
+uuidd:*:18858:0:99999:7:::
+tcpdump:*:18858:0:99999:7:::
+avahi-autoipd:*:18858:0:99999:7:::
+usbmux:*:18858:0:99999:7:::
+rtkit:*:18858:0:99999:7:::
+dnsmasq:*:18858:0:99999:7:::
+cups-pk-helper:*:18858:0:99999:7:::
+speech-dispatcher:!:18858:0:99999:7:::
+avahi:*:18858:0:99999:7:::
+kernoops:*:18858:0:99999:7:::
+saned:*:18858:0:99999:7:::
+nm-openvpn:*:18858:0:99999:7:::
+hplip:*:18858:0:99999:7:::
+whoopsie:*:18858:0:99999:7:::
+colord:*:18858:0:99999:7:::
+geoclue:*:18858:0:99999:7:::
+pulse:*:18858:0:99999:7:::
+gnome-initial-setup:*:18858:0:99999:7:::
+gdm:*:18858:0:99999:7:::
+sssd:*:18858:0:99999:7:::
+systemd-coredump:!!:19188::::::
+privoxy:*:19188:0:99999:7:::
+debian-tor:*:19188:0:99999:7:::
+lendor:$6$/juDoVR1mcfSkNrp$/ZWe6LaWENrJsl1I08EZMau93yS9v7hYRgP59vr9Y1.eypEMQU7mrgCBH7h5oHZ2VhUf2zKksSBgQ4hjdJCw10:19188:0:99999:7:::
+jhon:$6$CARWDlXjbwrbpiR4$kIh8TaZJavnp565iKCiVdLh.9Lf3M.mg/Ca5/WazR/p6TDvSEAWGKAf26Fr90X6CdUzDMd9iiBf0AVaphLb621:19422:0:99999:7:::
+ls -li /etc/shadow:
+4981172 -rw-r----- 1 root shadow 1654 мар  6 21:37 /etc/shadow
+ls -l testlb2mod.txt
+-rw-rw-r-- 2 jhon lendor 4 мар 20 19:18 testlb2mod.txt
+chmod -r testlb2mod.txt
+ls -l testlb2mod.txt
+--w--w---- 2 jhon lendor 4 мар 20 19:18 testlb2mod.txt
+cat /etc/fstab:
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/nvme0n1p9 during installation
+UUID=3d4f07cb-eb44-4228-96f8-76ca9a80b45c /               ext4    errors=remount-ro 0       1
+# /boot/efi was on /dev/nvme0n1p1 during installation
+UUID=F6EB-A82E  /boot/efi       vfat    umask=0077      0       1
+# /home was on /dev/nvme0n1p10 during installation
+UUID=3940cb94-d71f-4acc-8c21-74611a0a11c3 /home           ext4    defaults        0       2
+# swap was on /dev/nvme0n1p5 during installation
+UUID=d5adcf4d-65e5-41d9-923e-b1c75def544d none            swap    sw              0       0
+df -T
+Файл.система    Тип      1K-блоков Использовано  Доступно Использовано% Cмонтировано в
+udev            devtmpfs   7805776            0   7805776            0% /dev
+tmpfs           tmpfs      1569744         2120   1567624            1% /run
+/dev/nvme0n1p9  ext4     127317252     13198480 107605212           11% /
+tmpfs           tmpfs      7848708        27120   7821588            1% /dev/shm
+tmpfs           tmpfs         5120            4      5116            1% /run/lock
+tmpfs           tmpfs      7848708            0   7848708            0% /sys/fs/cgroup
+/dev/loop0      squashfs       128          128         0          100% /snap/bare/5
+/dev/loop2      squashfs    900352       900352         0          100% /snap/clion/229
+/dev/loop3      squashfs    119680       119680         0          100% /snap/core/14784
+/dev/loop5      squashfs    119680       119680         0          100% /snap/core/14946
+/dev/loop4      squashfs     56960        56960         0          100% /snap/core18/2714
+/dev/loop6      squashfs     56960        56960         0          100% /snap/core18/2721
+/dev/loop7      squashfs     64896        64896         0          100% /snap/core20/1828
+/dev/loop8      squashfs    224256       224256         0          100% /snap/gnome-3-34-1804/77
+/dev/loop10     squashfs     64896        64896         0          100% /snap/core20/1852
+/dev/loop15     squashfs     66688        66688         0          100% /snap/gtk-common-themes/1515
+/dev/loop12     squashfs    354688       354688         0          100% /snap/gnome-3-38-2004/119
+/dev/loop16     squashfs     93952        93952         0          100% /snap/gtk-common-themes/1535
+/dev/loop13     squashfs     47104        47104         0          100% /snap/snap-store/638
+/dev/loop19     squashfs     51072        51072         0          100% /snap/snapd/18596
+/dev/loop14     squashfs     47104        47104         0          100% /snap/snap-store/599
+/dev/loop17     squashfs      4352         4352         0          100% /snap/tree/18
+/dev/loop18     squashfs     51072        51072         0          100% /snap/snapd/18357
+/dev/nvme0n1p10 ext4      19046484      2466924  15586692           14% /home
+/dev/nvme0n1p1  vfat        200704        67562    133142           34% /boot/efi
+/dev/loop20     squashfs    223744       223744         0          100% /snap/gnome-3-34-1804/90
+/dev/loop9      squashfs    358144       358144         0          100% /snap/gnome-3-38-2004/137
+/dev/loop11     squashfs    910464       910464         0          100% /snap/clion/233
+tmpfs           tmpfs      1569740           40   1569700            1% /run/user/1000
+cat /usr/include/linux/limits.h
+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+#ifndef _LINUX_LIMITS_H
+#define _LINUX_LIMITS_H
+
+#define NR_OPEN	        1024
+
+#define NGROUPS_MAX    65536	/* supplemental group IDs are available */
+#define ARG_MAX       131072	/* # bytes of args + environ for exec() */
+#define LINK_MAX         127	/* # links a file may have */
+#define MAX_CANON        255	/* size of the canonical input queue */
+#define MAX_INPUT        255	/* size of the type-ahead buffer */
+#define NAME_MAX         255	/* # chars in a file name */
+#define PATH_MAX        4096	/* # chars in a path name including nul */
+#define PIPE_BUF        4096	/* # bytes in atomic write to a pipe */
+#define XATTR_NAME_MAX   255	/* # chars in an extended attribute name */
+#define XATTR_SIZE_MAX 65536	/* size of an extended attribute value (64k) */
+#define XATTR_LIST_MAX 65536	/* size of extended attribute namelist (64k) */
+
+#define RTSIG_MAX	  32
+
+#endif
+file script
+script: Bourne-Again shell script, UTF-8 Unicode text executable
+file -z ziptest.zip
+ziptest.zip: ASCII text
+file Test/
+Test/: directory

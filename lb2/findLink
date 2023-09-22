@@ -1,0 +1,5 @@
+#!/bin/bash
+comp=`ls -lRi | grep 'soft' | grep 'test'`
+count=`ls -lRi | grep 'soft' | grep 'test'| wc -l`
+echo "$comp"
+echo "Count link: $count"

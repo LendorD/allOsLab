@@ -1,0 +1,275 @@
+lb2 --- Lutsenko_Dmitry
+1)
+рекурсивный вывод всех типов файлов:
+ls -l -R | tr -s " " | cut -d " " -f 1,9 | sort | uniq -w 1| cut -c 1,11-
+
+b 18:14
+c 2023
+.
+- crond.reboot
+c 2023
+.
+d inaccessible
+.
+l 5556c1069000-5556c106e000
+.
+- memory.pressure_level
+.
+p 10.ref
+- aliases
+.
+- usercopy_fallback
+.
+s agent.1862
+.
+- abort
+
+2)
+Создание жёстких ссылок происходит при помощи " ln ":
+ln test.txt hard-test
+
+Для поиска всех жёстких ссылок мы можем использовать:
+ls -li -R| grep 534537, где значение после grep является indode созданного файла
+
+3)
+Комнада link предназначена для создания жёстких ссылок
+для создания символьных ссылок обычно используется ln -s "file1" "soft-link-file1"
+
+Пусть в файле test.txt содержится текст:
+qwe
+zxc
+при команде ln -s test.txt soft-test, мы создадим символьную ссылку на test.txt
+команда ls -li:
+534537 -rw-rw-r-- 2 lendor lendor     9 мар  5 22:26  hard-test
+527020 -rw-rw-r-- 1 lendor lendor   351 мар  5 18:54  lb2.txt
+536967 lrwxrwxrwx 1 lendor lendor     8 мар  5 23:01  soft-test -> test.txt
+534537 -rw-rw-r-- 2 lendor lendor     9 мар  5 22:26  test.txt
+Мы можем увидеть что наша soft-test имеет другой inode, но если мы захотим вывести содержимое этого файла мы получим тот же текст что и в test.txt
+при удалении test.txt наша ссылка перестанет работать и если мы опять захотим вывести содержимое при помощи команды cat, мы получим ошибку
+но если создать файл с таким же именем то ссылка будет ссылаться на него
+если после создание символьной ссылки перенсти основной файл или нашу ссылку в другую директорию то ссылка будет недействительна
+Команда cp не является символьной ссылкой, она просто создаёт копию файла, и эта копия является независимой от основного файла.
+
+4)
+Получить символьные ссылки можно при помощи команды: find -type l
+если ссылка содержит имя файла то тогда мы можем найти эти ссылки при помощи find -type l | grep <file_name>
+или же ls -li | tr -d " "  | grep <file_name>
+
+5)
+Утилита find предназачена для поиска файлов, в качестве аргументов ей передаётся директория в которой будет происходить поиск, ключ и имя файла
+find / -name test - поиск файлов с именем test
+find / -iname test - поиск без учёта регистра
+find / -name 'test*' - поиск всех файлов начинающихся с test
+find / -size <arg> - поиск по размеру файла
+find / -emty - поиск всех пустых файлов
+6)
+od test.txt:
+0000000 073561 005145 000012
+0000005
+od prog.c:
+0000000 021440 067151 066143 062165 020145 071474 062164 067551
+0000020 064056 005076 067151 020164 060555 067151 024040 005051
+0000040 005173 071160 067151 063164 024040 044042 066145 067554
+0000060 020054 073145 071145 061171 062157 020171 020041 024442
+0000100 005073 005175
+0000104
+0000000 064443 061556 072554 062544 036040 072163 064544 027157
+0000020 037150 064412 072156 066440 064541 020156 020050 071141
+0000040 061547 020054 071141 073147 024440 064412 072156 060440
+0000060 063562 035543 061412 060550 020162 060452 063562 020166
+0000100 056533 005073 005173 064143 071141 071440 071164 034133
+0000120 056460 005073 061563 067141 024146 022442 021163 020054
+0000140 072163 024562 005073 063151 024040 071141 061547 037040
+0000160 030040 020051 005173 020040 064440 020146 063050 070157
+0000200 067145 071450 071164 021054 021162 020051 036475 047040
+0000220 046125 024514 075440 070012 064562 072156 024146 022442
+0000240 035163 150040 150275 150665 150203 150264 150660 150207
+0000260 020260 137720 100321 134320 150040 150277 150276 150677
+0000300 150613 150202 150272 020265 137320 101321 135320 100321
+0000320 105721 101321 106321 150440 150204 150260 150271 020273
+0000340 071445 026042 071141 073147 030133 026135 072163 024562
+0000360 005073 020040 076440 020012 020040 066145 062563 070012
+0000400 064562 072156 024146 022442 035163 150440 150204 150260
+0000420 150271 020273 071445 150040 150676 150202 150672 150600
+0000440 150613 021202 060454 063562 055566 056460 071454 071164
+0000460 035451 076412 062412 071554 005145 020040 020040 070040
+0000500 064562 072156 024146 150042 150676 150202 150672 150600
+0000520 150213 150262 150260 150265 150674 150213 020271 102321
+0000540 130320 134720 135720 150040 150275 020265 101721 135320
+0000560 130320 133720 130320 136720 024442 005073 005175
+0000576
+
+od - выводит содержимое файла в разных сс 
+первый столбец в файлах с расширение .с соответсвует строкам
+При обращении к каталогу выдаёт ошибку.
+
+7)
+Скрипт для измерения размера католога:
+#!/bin/bash
+cd Test/
+for i in 1 2 3 4 5
+do
+echo "creat file and dir"
+mkdir $i.dr
+> $i
+echo "remove file if number < 3"
+if (("$i" < 3))
+then
+        rmdir $i.dr
+        rm $i
+fi
+echo "Size directory:"
+du -h ~/Test
+done
+8)
+в каталог /etc/shadow имеет доступ только администратор и в нём содержится защищённая ифнормация о пользовательях
+каталог /etc/passwd содержит информацию о пользователях
+команда passwd - позволяет изменять пароль пользователя(обычный пользователь может изменить пароль только своей учётной записи)
+9)
+chmod - команда для изменения прав доступа к файлам или каталогам.
+$> myfile
+ls -l myfile:
+-rw-rw-r-- 1 lendor lendor 0 мар  6 20:06 myfile
+chmod u+rwx myfile
+ls -l myfile:
+-rwxrw-r-- 1 lendor lendor 0 мар  6 20:06 myfile
+chmod g+rwx myfile
+ls -l myfile:
+-rwxrwxr-- 1 lendor lendor 0 мар  6 20:06 myfile
+в параметры мы можем передать u(user), g(group), o(other), a(all) - при помощи эти флагов мы выбираем кому дать права доступа
+также мы можем убрать их написав " - "
+комнда chown - позволяет изменить владельца файла
+расширить права доступа с помощью флага SUID мы может 2 способами:
+chmod 4751 myfile
+chmod u+s myfile
+Конечные права на файл определяются правами пользователя, т.к. если забрать право на исполенение(запись и др.) у пользователя, но оставить у группы, то пользователь не сможет иметь эти права.
+r - read
+w - write
+x - xecute
+
+10)
+программа шлюз:
+#!/bin/bash
+chmod a+r testback
+данная программа будет работать и когда пользователи находятся в одной группе и когда в разных
+т.к. тут даёт право доступа всем
+чтобы право доступа имели только люди из одной группы нужно написать:
+#!/bin/bash
+chmod g+r testback
+для SUID:
+#!/bin/bash
+chmod a+s testback
+11)
+df -h:
+
+Файл.система    Размер Использовано  Дост Использовано% Cмонтировано в
+udev              7,5G            0  7,5G            0% /dev
+tmpfs             1,5G         2,1M  1,5G            1% /run
+/dev/nvme0n1p9    122G          13G  104G           11% /
+tmpfs             7,5G         128M  7,4G            2% /dev/shm
+tmpfs             5,0M         4,0K  5,0M            1% /run/lock
+tmpfs             7,5G            0  7,5G            0% /sys/fs/cgroup
+/dev/loop0        128K         128K     0          100% /snap/bare/5
+/dev/loop1        879M         879M     0          100% /snap/clion/219
+/dev/loop2        879M         879M     0          100% /snap/clion/222
+/dev/loop3         56M          56M     0          100% /snap/core18/2679
+/dev/loop5         64M          64M     0          100% /snap/core20/1778
+/dev/loop4         56M          56M     0          100% /snap/core18/2697
+/dev/loop6         64M          64M     0          100% /snap/core20/1822
+/dev/loop7        219M         219M     0          100% /snap/gnome-3-34-1804/72
+/dev/loop8        347M         347M     0          100% /snap/gnome-3-38-2004/115
+/dev/loop9        219M         219M     0          100% /snap/gnome-3-34-1804/77
+/dev/loop10       347M         347M     0          100% /snap/gnome-3-38-2004/119
+/dev/loop14        50M          50M     0          100% /snap/snapd/17950
+/dev/loop11        66M          66M     0          100% /snap/gtk-common-themes/1515
+/dev/loop16        50M          50M     0          100% /snap/snapd/18357
+/dev/loop15        92M          92M     0          100% /snap/gtk-common-themes/1535
+/dev/loop12        46M          46M     0          100% /snap/snap-store/599
+/dev/loop13        46M          46M     0          100% /snap/snap-store/638
+/dev/nvme0n1p10    19G         1,7G   16G           10% /home
+/dev/nvme0n1p1    196M          66M  131M           34% /boot/efi
+tmpfs             1,5G          52K  1,5G            1% /run/user/1000
+
+cat /etc/fstab:
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/nvme0n1p9 during installation
+UUID=3d4f07cb-eb44-4228-96f8-76ca9a80b45c /               ext4    errors=remount-ro 0       1
+# /boot/efi was on /dev/nvme0n1p1 during installation
+UUID=F6EB-A82E  /boot/efi       vfat    umask=0077      0       1
+# /home was on /dev/nvme0n1p10 during installation
+UUID=3940cb94-d71f-4acc-8c21-74611a0a11c3 /home           ext4    defaults        0       2
+# swap was on /dev/nvme0n1p5 during installation
+UUID=d5adcf4d-65e5-41d9-923e-b1c75def544d none            swap    sw              0       0
+
+комнда df -h выводит файл. системы и показывает где они смонтированы
+комнда cat /etc/fstab  выводит файлы воможные для монтирования 
+cat /etc/mtab:
+
+
+sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
+proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
+udev /dev devtmpfs rw,nosuid,noexec,relatime,size=7807756k,nr_inodes=1951939,mode=755,inode64 0 0
+devpts /dev/pts devpts rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,noexec,relatime,size=1569744k,mode=755,inode64 0 0
+/dev/nvme0n1p9 / ext4 rw,relatime,errors=remount-ro 0 0
+securityfs /sys/kernel/security securityfs rw,nosuid,nodev,noexec,relatime 0 0
+tmpfs /dev/shm tmpfs rw,nosuid,nodev,inode64 0 0
+tmpfs /run/lock tmpfs rw,nosuid,nodev,noexec,relatime,size=5120k,inode64 0 0
+tmpfs /sys/fs/cgroup tmpfs ro,nosuid,nodev,noexec,mode=755,inode64 0 0
+cgroup2 /sys/fs/cgroup/unified cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0
+cgroup /sys/fs/cgroup/systemd cgroup rw,nosuid,nodev,noexec,relatime,xattr,name=systemd 0 0
+pstore /sys/fs/pstore pstore rw,nosuid,nodev,noexec,relatime 0 0
+efivarfs /sys/firmware/efi/efivars efivarfs rw,nosuid,nodev,noexec,relatime 0 0
+bpf /sys/fs/bpf bpf rw,nosuid,nodev,noexec,relatime,mode=700 0 0
+cgroup /sys/fs/cgroup/perf_event cgroup rw,nosuid,nodev,noexec,relatime,perf_event 0 0
+cgroup /sys/fs/cgroup/cpu,cpuacct cgroup rw,nosuid,nodev,noexec,relatime,cpu,cpuacct 0 0
+cgroup /sys/fs/cgroup/misc cgroup rw,nosuid,nodev,noexec,relatime,misc 0 0
+cgroup /sys/fs/cgroup/blkio cgroup rw,nosuid,nodev,noexec,relatime,blkio 0 0
+cgroup /sys/fs/cgroup/devices cgroup rw,nosuid,nodev,noexec,relatime,devices 0 0
+cgroup /sys/fs/cgroup/cpuset cgroup rw,nosuid,nodev,noexec,relatime,cpuset 0 0
+cgroup /sys/fs/cgroup/rdma cgroup rw,nosuid,nodev,noexec,relatime,rdma 0 0
+cgroup /sys/fs/cgroup/hugetlb cgroup rw,nosuid,nodev,noexec,relatime,hugetlb 0 0
+cgroup /sys/fs/cgroup/memory cgroup rw,nosuid,nodev,noexec,relatime,memory 0 0
+cgroup /sys/fs/cgroup/net_cls,net_prio cgroup rw,nosuid,nodev,noexec,relatime,net_cls,net_prio 0 0
+cgroup /sys/fs/cgroup/freezer cgroup rw,nosuid,nodev,noexec,relatime,freezer 0 0
+cgroup /sys/fs/cgroup/pids cgroup rw,nosuid,nodev,noexec,relatime,pids 0 0
+systemd-1 /proc/sys/fs/binfmt_misc autofs rw,relatime,fd=28,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=16629 0 0
+mqueue /dev/mqueue mqueue rw,nosuid,nodev,noexec,relatime 0 0
+hugetlbfs /dev/hugepages hugetlbfs rw,relatime,pagesize=2M 0 0
+debugfs /sys/kernel/debug debugfs rw,nosuid,nodev,noexec,relatime 0 0
+tracefs /sys/kernel/tracing tracefs rw,nosuid,nodev,noexec,relatime 0 0
+fusectl /sys/fs/fuse/connections fusectl rw,nosuid,nodev,noexec,relatime 0 0
+configfs /sys/kernel/config configfs rw,nosuid,nodev,noexec,relatime 0 0
+/dev/loop0 /snap/bare/5 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop1 /snap/clion/219 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop2 /snap/clion/222 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop3 /snap/core18/2679 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop5 /snap/core20/1778 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop4 /snap/core18/2697 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop6 /snap/core20/1822 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop7 /snap/gnome-3-34-1804/72 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop8 /snap/gnome-3-38-2004/115 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop9 /snap/gnome-3-34-1804/77 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop10 /snap/gnome-3-38-2004/119 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop14 /snap/snapd/17950 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop11 /snap/gtk-common-themes/1515 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop16 /snap/snapd/18357 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop15 /snap/gtk-common-themes/1535 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop12 /snap/snap-store/599 squashfs ro,nodev,relatime,errors=continue 0 0
+/dev/loop13 /snap/snap-store/638 squashfs ro,nodev,relatime,errors=continue 0 0
+binfmt_misc /proc/sys/fs/binfmt_misc binfmt_misc rw,nosuid,nodev,noexec,relatime 0 0
+/dev/nvme0n1p10 /home ext4 rw,relatime 0 0
+/dev/nvme0n1p1 /boot/efi vfat rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro 0 0
+tmpfs /run/user/1000 tmpfs rw,nosuid,nodev,relatime,size=1569740k,mode=700,uid=1000,gid=1000,inode64 0 0
+gvfsd-fuse /run/user/1000/gvfs fuse.gvfsd-fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
+/dev/fuse /run/user/1000/doc fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
+
+команда cat /etc/mtab выводит уже смонтированные файлы, которые реально установлены на компьютере
+
+
